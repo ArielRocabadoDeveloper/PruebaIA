@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Pacientes</title>
+
+<style>
+body{
+    margin:0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:#eef1f5;
+}
+
+/* --- Layout general --- */
+.container{
+    display:flex;
+    height:100vh;
+}
+
+/* --- Panel izquierdo (lista) --- */
+.sidebar{
+    width:320px;
+    background:white;
+    border-right:1px solid #d9dce2;
+    padding:20px;
+    overflow-y:auto;
+}
+
+.sidebar h2{
+    margin-top:0;
+    font-size:21px;
+}
+
+.busqueda input{
+    width:100%;
+    padding:10px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+/* Lista de pacientes */
+.paciente{
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:10px;
+    cursor:pointer;
+    background:#f7f9fb;
+    border:1px solid #dce3eb;
+    transition:0.2s;
+}
+
+.paciente:hover{
+    background:#eaf3ff;
+    border-color:#90caf9;
+}
+
+/* --- Panel derecho (ficha clínica) --- */
+.ficha{
+    flex:1;
+    padding:30px;
+    overflow-y:auto;
+}
+
+.carpeta{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    max-width:900px;
+    margin:auto;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+    border:1px solid #d0d6e0;
+    animation:fade 0.3s ease;
+}
+
+@keyframes fade {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    border-bottom:2px solid #ddd;
+    padding-bottom:10px;
+    margin-bottom:20px;
+}
+
+.section-title{
+    border-left:5px solid #4CAF50;
+    padding-left:10px;
+    font-size:20px;
+    margin-top:30px;
+}
+
+.info{
+    background:#f5f7fa;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid #dce2ea;
+}
+
+.visita{
+    background:#fafafa;
+    padding:15px;
+    margin-top:15px;
+    border:1px solid #dce3eb;
+    border-left:5px solid #2196F3;
+    border-radius:10px;
+}
+
+.tag{
+    display:inline-block;
+    background:#e8f5e9;
+    padding:5px 8px;
+    border-radius:6px;
+    color:#2e7d32;
+    margin:3px;
+    font-size:13px;
+}
+
+.visita-fecha{
+    font-weight:bold;
+    color:#0d47a1;
+}
+
+/* ---------------------------------
+   RESPONSIVIDAD PARA CELULARES
+----------------------------------- */
+@media(max-width: 820px){
+
+    .container{
+        flex-direction:column;
+        height:auto;
+    }
+
+    .sidebar{
+        width:100%;
+        height:auto;
+        border-right:none;
+        border-bottom:1px solid #d9dce2;
+    }
+
+    /* Lista de pacientes: scroll horizontal elegante */
+    #listaPacientes{
+        display:flex;
+        gap:10px;
+        overflow-x:auto;
+        padding-bottom:10px;
+    }
+
+    .paciente{
+        min-width:240px;
+        font-size:15px;
+        white-space:nowrap;
+    }
+
+    .ficha{
+        padding:15px;
+    }
+
+    .carpeta{
+        padding:20px;
+        margin-top:10px;
+    }
+
+    .header h2{
+        font-size:18px;
+    }
+
+    .header h3{
+        font-size:16px;
+    }
+
+    .section-title{
+        font-size:18px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LISTA IZQUIERDA / ARRIBA EN MOBILE -->
+    <div class="sidebar">
+        <h2>Pacientes</h2>
+
+        <div class="busqueda">
+            <input type="text" id="search" placeholder="Buscar por nombre o CI...">
+        </div>
+
+        <!-- Lista -->
+        <div id="listaPacientes">
+            <div class="paciente" onclick="mostrarFicha('1')">
+                9348291 – María Fernández
+            </div>
+            <div class="paciente" onclick="mostrarFicha('2')">
+                8123390 – Juan Vargas
+            </div>
+            <div class="paciente" onclick="mostrarFicha('3')">
+                7021145 – Sofía Calderón
+            </div>
+        </div>
+    </div>
+
+    <!-- FICHA DERECHA -->
+    <div class="ficha">
+        
+        <!-- FICHA POR DEFECTO -->
+        <div id="fichaPaciente" class="carpeta">
+            <h2>Seleccione un paciente</h2>
+            <p>Aparecerá aquí toda la ficha clínica e historial.</p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SISTEMA PARA CAMBIAR FICHAS -->
+<script>
+function mostrarFicha(id){
+
+    let fichas = {
+        "1": `
+        <div class="carpeta">
+            <div class="header">
+                <h2>Carpeta Clínica</h2>
+                <h3>María Fernández</h3>
+            </div>
+
+            <h3 class="section-title">Datos del Paciente</h3>
+            <div class="info">
+                <p><b>CI:</b> 9348291</p>
+                <p><b>Teléfono:</b> 71234567</p>
+                <p><b>Observaciones:</b> Piel sensible</p>
+            </div>
+
+            <h3 class="section-title">Historial</h3>
+
+            <div class="visita">
+                <div class="visita-fecha">12/11/2025 – Peeling + Fisioterapia</div>
+                <span class="tag">Peeling</span>
+                <span class="tag">Fisioterapia Facial</span>
+            </div>
+
+            <div class="visita">
+                <div class="visita-fecha">05/11/2025 – Limpieza Profunda</div>
+                <span class="tag">Limpieza Facial</span>
+            </div>
+        </div>
+        `,
+
+        "2": `
+        <div class="carpeta">
+            <div class="header">
+                <h2>Carpeta Clínica</h2>
+                <h3>Juan Vargas</h3>
+            </div>
+
+            <h3 class="section-title">Datos del Paciente</h3>
+            <div class="info">
+                <p><b>CI:</b> 8123390</p>
+                <p><b>Teléfono:</b> 76544321</p>
+                <p><b>Observaciones:</b> Tratamiento capilar</p>
+            </div>
+
+            <h3 class="section-title">Historial</h3>
+
+            <div class="visita">
+                <div class="visita-fecha">10/11/2025 – Dermapen</div>
+                <span class="tag">Dermapen</span>
+                <span class="tag">Vitamina C</span>
+            </div>
+        </div>
+        `,
+
+        "3": `
+        <div class="carpeta">
+            <div class="header">
+                <h2>Carpeta Clínica</h2>
+                <h3>Sofía Calderón</h3>
+            </div>
+
+            <h3 class="section-title">Datos del Paciente</h3>
+            <div class="info">
+                <p><b>CI:</b> 7021145</p>
+                <p><b>Teléfono:</b> 78911223</p>
+                <p><b>Observaciones:</b> Acné severo</p>
+            </div>
+
+            <h3 class="section-title">Historial</h3>
+
+            <div class="visita">
+                <div class="visita-fecha">08/11/2025 – Tratamiento antiacné</div>
+                <span class="tag">Control Sebáceo</span>
+                <span class="tag">Crema AHA</span>
+            </div>
+        </div>
+        `
+    };
+
+    document.getElementById("fichaPaciente").innerHTML = fichas[id];
+}
+
+/* Filtro de búsqueda */
+document.getElementById("search").addEventListener("keyup", function(){
+    let filtro = this.value.toLowerCase();
+    let pacientes = document.querySelectorAll(".paciente");
+
+    pacientes.forEach(p => {
+        let texto = p.textContent.toLowerCase();
+        p.style.display = texto.includes(filtro) ? "" : "none";
+    });
+});
+</script>
+
+</body>
+</html>

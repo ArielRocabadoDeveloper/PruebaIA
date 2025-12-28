@@ -1,0 +1,47 @@
+src/
+├── assets/
+│   └── react.svg
+├── components/
+│   ├── layout/
+│   │   ├── Header.jsx
+│   │   ├── Sidebar.jsx
+│   │   └── Footer.jsx
+│   ├── ui/
+│   │   ├── Button.jsx
+│   │   ├── Card.jsx
+│   │   ├── Input.jsx
+│   │   ├── Select.jsx
+│   │   └── Modal.jsx
+│   ├── charts/
+│   │   ├── ChartBar.jsx
+│   │   └── ChartPie.jsx
+│   ├── forms/
+│   │   ├── LoginForm.jsx
+│   │   ├── RegisterAppointmentForm.jsx  ← El que estás haciendo ahora
+│   │   └── ExpenseForm.jsx
+│   ├── previews/
+│   │   └── PreviewAtencion.jsx
+│   └── lists/
+│       ├── PatientList.jsx
+│       └── ServiceList.jsx
+├── pages/
+│   ├── Login.jsx
+│   ├── DashboardDoctor.jsx
+│   ├── DashboardDuena.jsx
+│   ├── AdminCuentas.jsx
+│   ├── AdminItems.jsx
+│   ├── Atencion.jsx          ← Este será RegisterAppointmentForm
+│   ├── Buscar.jsx
+│   └── Gasto.jsx
+├── utils/
+│   ├── api.js
+│   ├── auth.js
+│   └── helpers.js
+├── context/
+│   └── AuthContext.jsx
+├── styles/
+│   └── globals.css          ← Mueve el contenido de index.css aquí
+├── App.css
+├── App.jsx
+├── main.jsx
+└── index.css                ← Vacío o solo importa globals.css

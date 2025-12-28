@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha del Paciente</title>
+
+<style>
+body{
+    background:#eef2f7;
+    font-family: Arial;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    max-width:900px;
+    margin:auto;
+}
+
+.header{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    border-bottom:1px solid #ddd;
+    padding-bottom:10px;
+    margin-bottom:20px;
+}
+
+.header h2{
+    margin:0;
+}
+
+.visita{
+    background:#f7fafc;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    border-left:5px solid #4CAF50;
+}
+
+.tag{
+    display:inline-block;
+    background:#e8f5e9;
+    padding:4px 7px;
+    margin:3px;
+    border-radius:6px;
+    color:#2e7d32;
+    font-size:12px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+    <div class="header">
+        <h2>CI: 9348291</h2>
+        <h2>Paciente: María Fernández</h2>
+    </div>
+
+    <h3>Historial de Tratamientos</h3>
+
+    <div class="visita">
+        <b>12/11/2025 – Consulta + Peeling</b>
+        <br><br>
+        <span class="tag">Peeling Químico</span>
+        <span class="tag">Fisioterapia</span>
+        <span class="tag">Vitamina C</span>
+        <span class="tag">Protector Solar</span>
+    </div>
+
+    <div class="visita">
+        <b>05/11/2025 – Limpieza Facial</b>
+        <br><br>
+        <span class="tag">Limpieza Profunda</span>
+    </div>
+
+    <div class="visita">
+        <b>01/11/2025 – Mesoterapia</b>
+        <br><br>
+        <span class="tag">Mesoterapia Antiage</span>
+    </div>
+
+</div>
+
+</body>
+</html>

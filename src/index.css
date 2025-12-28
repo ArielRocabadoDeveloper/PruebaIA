@@ -1,0 +1,9 @@
+/* Importar estilos custom al inicio para evitar errores de PostCSS con @import */
+@import './styles/globals.css';
+
+/* Tailwind v3 (sintaxis clásica) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Si necesitas sobreescribir utilidades de Tailwind, coloca tus reglas dentro de @layer en tu CSS custom. */

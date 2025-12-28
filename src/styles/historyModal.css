@@ -1,0 +1,651 @@
+/* ═══════════════════════════════════════════════════════════
+   HISTORY MODAL - Componente Separado
+   ═══════════════════════════════════════════════════════════ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  animation: fadeInOverlay 0.3s ease;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal de Historial */
+.history-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 3rem);
+  max-width: 1000px;
+  max-height: calc(100vh - 4rem);
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  animation: slideUpModal 0.4s ease;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+@keyframes slideUpModal {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Modal Header */
+.modal-header {
+  padding: 2rem;
+  background: linear-gradient(135deg, #31b237 0%, #6ab849 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-title-section h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 0.3rem 0;
+}
+
+.modal-title-section h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  opacity: 0.95;
+}
+
+.close-modal-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  color: white;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.close-modal-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* Modal Content - Scrollable */
+.modal-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2rem;
+  width: 100%;
+  display: block;
+  margin: 0;
+  height: 100%;
+  box-sizing: border-box;
+  /* Centrar contenido en desktop */
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Scrollbar personalizado */
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #31b237;
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #6ab849;
+}
+
+/* Secciones del Modal */
+.modal-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.modal-section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-section-title .material-symbols-outlined {
+  font-size: 1.4rem;
+  color: #31b237;
+}
+
+/* ═════════════════════════════════════════════════════════
+   DATOS DEL PACIENTE - GRID
+   ═════════════════════════════════════════════════════════ */
+
+.patient-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.data-item {
+  background: #f9fafb;
+  padding: 1.2rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.data-item:hover {
+  background: #f3f4f6;
+  border-color: #31b237;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(49, 178, 55, 0.1);
+}
+
+.data-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  word-break: break-word;
+}
+
+.data-value.email-text {
+  font-size: 0.95rem;
+  color: #6b7280;
+  overflow-wrap: break-word;
+}
+
+.data-value.highlight {
+  color: #2196f3;
+}
+
+.data-value.highlight-green {
+  color: #31b237;
+  font-size: 1.2rem;
+}
+
+/* ═════════════════════════════════════════════════════════
+   HISTORIAL - TARJETAS
+   ═════════════════════════════════════════════════════════ */
+
+.history-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.history-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border: 2px solid #e5e7eb;
+  border-left: 5px solid #2196f3;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.4s ease;
+  width: 100%;
+  box-sizing: border-box;
+  /* Mantener ancho estable */
+  min-width: 0;
+}
+
+.history-card:hover {
+  box-shadow: 0 8px 20px rgba(33, 150, 243, 0.15);
+  transform: translateY(-2px);
+  border-left-color: #31b237;
+}
+
+.history-card-header {
+  background: #f9fafb;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+}
+
+.history-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-icon.material-symbols-outlined {
+  font-size: 1.2rem;
+}
+
+.date-text {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.photo-badge {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge-yes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #d1fae5;
+  color: #047857;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-no {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.history-card-body {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.history-detail-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #374151;
+  min-width: 100px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.detail-value {
+  color: #6b7280;
+  flex: 1;
+  min-width: 150px;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+.history-detail-row.observation-row {
+  background: #fffbeb;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border-left: 3px solid #f59e0b;
+  margin-top: 0.5rem;
+}
+
+.observation-text {
+  background: transparent;
+  color: #92400e;
+  font-style: italic;
+}
+
+.history-card-footer {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  padding: 1rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #d1d5db;
+}
+
+.total-text {
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.total-amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #31b237;
+}
+
+.no-history-msg {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #9ca3af;
+}
+
+.no-history-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* ═════════════════════════════════════════════════════════
+   RESPONSIVE - TABLET
+   ═════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .history-modal {
+    width: calc(100% - 2rem);
+    max-width: 95vw;
+    max-height: calc(100vh - 3rem);
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+  }
+
+  .modal-title-section h2 {
+    font-size: 1.2rem;
+  }
+
+  .modal-title-section h3 {
+    font-size: 1.5rem;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+    padding-right: 1.2rem;
+  }
+
+  .patient-data-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .data-item {
+    padding: 1rem;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════
+   RESPONSIVE - MOBILE GRANDE
+   ═════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .history-modal {
+    width: calc(100% - 1.5rem);
+    max-width: 98vw;
+    max-height: calc(100vh - 2rem);
+  }
+
+  .modal-header {
+    padding: 1.2rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-title-section h2 {
+    font-size: 1rem;
+  }
+
+  .modal-title-section h3 {
+    font-size: 1.3rem;
+  }
+
+  .close-modal-btn {
+    align-self: flex-end;
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+    margin-top: -0.5rem;
+  }
+
+  .modal-content {
+    padding: 1.2rem;
+  }
+
+  .modal-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .modal-section-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .patient-data-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .data-item {
+    padding: 0.9rem;
+  }
+
+  .data-value {
+    font-size: 1rem;
+  }
+
+  .history-card {
+    border-left-width: 4px;
+  }
+
+  .history-card-header {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .history-card-body {
+    padding: 1rem;
+    gap: 0.6rem;
+  }
+
+  .history-detail-row {
+    gap: 0.8rem;
+  }
+
+  .detail-label {
+    min-width: 90px;
+    font-size: 0.9rem;
+  }
+
+  .detail-value {
+    font-size: 0.9rem;
+  }
+
+  .history-card-footer {
+    padding: 0.8rem 1rem;
+  }
+
+  .total-amount {
+    font-size: 1.1rem;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════
+   RESPONSIVE - MOBILE PEQUEÑO
+   ═════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+  .history-modal {
+    width: calc(100% - 1rem);
+    max-height: calc(100vh - 1rem);
+  }
+
+  .modal-header {
+    padding: 1rem;
+  }
+
+  .modal-title-section h2 {
+    font-size: 0.9rem;
+  }
+
+  .modal-title-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .close-modal-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+  }
+
+  .modal-content {
+    padding: 1rem;
+  }
+
+  .modal-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.2rem;
+  }
+
+  .modal-section-title {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .patient-data-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .data-item {
+    padding: 0.8rem;
+  }
+
+  .data-label {
+    font-size: 0.75rem;
+  }
+
+  .data-value {
+    font-size: 0.95rem;
+  }
+
+  .history-cards-container {
+    gap: 1rem;
+  }
+
+  .history-card-header {
+    padding: 0.9rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .history-card-body {
+    padding: 0.9rem;
+  }
+
+  .history-detail-row {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .detail-label {
+    font-size: 0.85rem;
+    min-width: auto;
+  }
+
+  .detail-value {
+    font-size: 0.85rem;
+  }
+
+  .no-history-msg {
+    padding: 2rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .no-history-icon {
+    font-size: 2.5rem;
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

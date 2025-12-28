@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dermo Estética - Login</title>
+  <style>
+    /* Basic resets */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; color: #333; line-height: 1.5; }
+    :root { --green: #28a745; }
+    
+    /* Header */
+    header { background: #fff; border-bottom: 1px solid #ddd; padding: 12px; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
+    .logo { font-size: 20px; font-weight: bold; }
+    .menu-toggle { background: none; border: none; font-size: 24px; cursor: pointer; display: block; }
+    nav { display: none; position: absolute; top: 60px; right: 20px; background: #fff; border: 1px solid #ddd; padding: 12px; }
+    nav.open { display: block; }
+    nav ul { list-style: none; }
+    nav li { margin: 8px 0; }
+    nav a { text-decoration: none; color: #333; }
+    nav a.active { font-weight: bold; color: #007bff; }
+    
+    /* Container */
+    .container { max-width: 1200px; margin: 20px auto; display: flex; flex-wrap: wrap; gap: 20px; padding: 0 12px; }
+    .panel { flex: 1; background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; min-width: 300px; }
+    
+    /* Form elements */
+    label { display: block; margin: 8px 0 4px; font-size: 14px; }
+    input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+    .row { display: flex; gap: 8px; align-items: center; }
+    .row input, .row select { flex: 1; }
+    .pay-row { display: flex; gap: 8px; align-items: center; }
+    .pay-row select { flex: 1; }
+    .btn-add { background: #28a745; color: #fff; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+    .ghost { background: transparent; border: 1px solid #ddd; color: #333; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+    button[type="submit"] { background: #007bff; color: #fff; border: none; padding: 12px; width: 100%; border-radius: 4px; cursor: pointer; margin-top: 16px; }
+    
+    /* Observations */
+    .form-group.observations { margin-top: 12px; }
+    textarea { resize: none; overflow: auto; }
+    
+    /* Photo row */
+    .photo-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+    .photo-label { font-size: 14px; }
+    .photo-checkbox { width: 20px; height: 20px; }
+    
+    /* Preview */
+    .list { min-height: 100px; }
+    .preview-empty { color: #888; text-align: center; padding: 20px 0; }
+    .total { font-weight: bold; margin-top: 12px; }
+    .small { font-size: 12px; color: #666; }
+    .badge { background: #eee; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+    .item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 8px 0; }
+    .meta { flex: 1; }
+    .remove { background: #dc3545; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+    
+    /* Dashboard specific */
+    .welcome { margin-bottom: 20px; }
+    .welcome h2 { display: flex; align-items: center; gap: 8px; }
+    .user-icon { width: 32px; height: 32px; }
+    .stats { display: flex; gap: 16px; margin-bottom: 20px; }
+    .stat-box { flex: 1; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; padding: 12px; text-align: center; }
+    .stat-box p { font-size: 14px; margin-bottom: 4px; }
+    .stat-box h3 { font-size: 24px; margin: 0; }
+    .patient-item { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #eee; }
+    .patient-item svg { width: 24px; height: 24px; flex-shrink: 0; }
+
+    /* Login specific */
+    .footer-bar { position: fixed; bottom: 0; left: 0; width: 100%; text-align: center; padding: 8px; background: #fff; border-top: 1px solid #ddd; color: #666; font-size: 12px; }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { flex-direction: column; }
+      .row { flex-direction: column; }
+      .pay-row { flex-direction: column; }
+      .pay-row input { width: 100%; }
+      .menu-toggle { display: block; }
+      .stats { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" style="max-width: 400px; margin-top: 40px;">
+    <div class="panel" style="text-align: center;">
+      <div style="background: var(--green); padding: 20px; border-radius: 8px 8px 0 0; margin: -14px -14px 12px -14px;">
+        <img src="assets/logo.svg" alt="Logo" width="60" height="60">
+        <h1 style="color: white; font-size: 18px; margin-top: 8px;">DERMO ESTETICA</h1>
+      </div>
+      <h2>Bienvenido</h2>
+      <form method="post">
+        <label>Correo electrónico:</label>
+        <input type="email" name="email" placeholder="Correo electrónico" required>
+        <label>Contraseña:</label>
+        <input type="password" name="pass" required>
+        <label>Seleccione sucursal</label>
+        <select name="sucursal" required>
+          <option value="">Seleccione sucursal</option>
+          <option value="Sucursal A">Sucursal A</option>
+          <option value="Sucursal B">Sucursal B</option>
+          <option value="Sucursal B">Sucursal C</option>
+        </select>
+        <button type="submit" style="margin-top: 12px;">Ingresar</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bar">AndesCode © 2025</div>
+</body>
+</html>

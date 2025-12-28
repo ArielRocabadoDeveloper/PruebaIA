@@ -1,0 +1,565 @@
+/* ═══════════════════════════════════════════════════════════
+   BUSCAR PACIENTE - Estilos Premium
+   ═══════════════════════════════════════════════════════════ */
+
+.buscar-container {
+  min-height: 100vh;
+  
+  padding: 2rem;
+  /*#6b7280 color de las letras*/
+}
+
+.buscar-header {
+  margin-bottom: 2rem;
+  animation: slideDown 0.6s ease-out;
+}
+
+.buscar-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  background: #31b237 ;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.buscar-header p {
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEARCH SECTION
+   ═══════════════════════════════════════════════════════════ */
+
+.search-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(49, 178, 55, 0.1);
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.search-group {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.search-input {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #31b237;
+  box-shadow: 0 0 0 3px rgba(49, 178, 55, 0.1);
+}
+
+.search-btn {
+  padding: 1rem 2rem;
+  background: #31b237;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(49, 178, 55, 0.2);
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(49, 178, 55, 0.3);
+}
+
+.search-btn:active {
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PATIENT INFO CARD
+   ═══════════════════════════════════════════════════════════ */
+
+.patient-info-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(49, 178, 55, 0.1);
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+.patient-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #f0fdf4;
+}
+
+.patient-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #31b237;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.patient-details h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.patient-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.patient-stat {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.patient-stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 10px;
+  border-left: 4px solid #31b237;
+}
+
+.patient-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #31b237;
+  display: block;
+}
+
+.patient-stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HISTORY SECTION
+   ═══════════════════════════════════════════════════════════ */
+
+.history-section {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.history-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.history-title-icon {
+  font-size: 1.5rem;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ATTENDANCE CARD
+   ═══════════════════════════════════════════════════════════ */
+
+.attendance-card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border-left: 4px solid #31b237;
+}
+
+.attendance-card:hover {
+  box-shadow: 0 6px 16px rgba(49, 178, 55, 0.15);
+  transform: translateY(-2px);
+}
+
+.attendance-header {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 100%);
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.attendance-date {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.attendance-date-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #31b237;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.attendance-doctor {
+  text-align: right;
+}
+
+.attendance-doctor-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.attendance-doctor-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-top: 0.25rem;
+}
+
+.attendance-body {
+  padding: 1.5rem;
+}
+
+.attendance-section {
+  margin-bottom: 1.5rem;
+}
+
+.attendance-section:last-child {
+  margin-bottom: 0;
+}
+
+.attendance-section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.attendance-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.attendance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.attendance-item:last-child {
+  border-bottom: none;
+}
+
+.attendance-item-name {
+  font-size: 0.9rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.attendance-item-qty {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.attendance-footer {
+  background: #f9fafb;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2px solid #f3f4f6;
+}
+
+.attendance-total-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.attendance-total-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #31b237;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EMPTY STATE
+   ═══════════════════════════════════════════════════════════ */
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #9ca3af;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════
+   OBSERVACIONES Y FOTO
+   ═══════════════════════════════════════════════════════════ */
+
+.attendance-observations {
+  background: #f9fafb;
+  border-left: 4px solid #31b237;
+  padding: 1rem;
+  border-radius: 8px;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.attendance-photo-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.photo-yes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #d1fae5;
+  color: #047857;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.photo-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   OBSERVACIONES Y FOTO
+   ═══════════════════════════════════════════════════════════ */
+
+.attendance-observations {
+  background: #f9fafb;
+  border-left: 4px solid #31b237;
+  padding: 1rem;
+  border-radius: 8px;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.attendance-photo-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.photo-yes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #d1fae5;
+  color: #047857;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.photo-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MEDIA QUERIES
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .buscar-container {
+    padding: 1rem;
+  }
+
+  .search-section,
+  .patient-info-card {
+    padding: 1.5rem;
+  }
+
+  .patient-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .patient-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.5rem;
+  }
+
+  .attendance-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .attendance-doctor {
+    text-align: center;
+  }
+
+  .attendance-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .buscar-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .search-section,
+  .patient-info-card {
+    padding: 1rem;
+  }
+
+  .attendance-card {
+    border-radius: 10px;
+  }
+
+  .attendance-body {
+    padding: 1rem;
+  }
+
+  .patient-stat {
+    flex-direction: column;
+  }
+
+  .attendance-item {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

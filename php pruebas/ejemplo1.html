@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ejemplo: Agregar varios servicios/productos</title>
+<style>
+  :root {
+    --green:#31b237;
+    --muted:#666;
+    --card:#fff;
+    --bg:#f4f5f7;
+    --danger:#e03e3e;
+  }
+  body{font-family:Segoe UI, Tahoma, sans-serif;background:var(--bg);margin:0;padding:18px;color:#222}
+  .container{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:18px}
+  .panel{background:var(--card);padding:14px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+  h2{margin:0 0 12px 0;color:var(--green)}
+  label{display:block;font-size:13px;margin:8px 0 4px;color:var(--muted)}
+  input[type="text"], input[type="tel"], select, input[type="number"]{
+    width:100%;padding:8px;border-radius:6px;border:1px solid #e0e0e0;box-sizing:border-box;
+  }
+  .row{display:flex;gap:8px}
+  .row > *{flex:1}
+  button{background:var(--green);color:white;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+  button.ghost{background:transparent;color:var(--green);border:1px solid var(--green)}
+  .list{margin-top:10px;border-top:1px dashed #eee;padding-top:8px}
+  .item{display:flex;align-items:center;justify-content:space-between;padding:8px 6px;border-radius:6px;background:#fbfbfb;margin-bottom:6px}
+  .item .meta{display:flex;gap:12px;align-items:center}
+  .small{font-size:13px;color:var(--muted)}
+  .total{font-weight:700;font-size:18px;margin-top:12px;text-align:right}
+  .remove{background:transparent;border:0;color:var(--danger);cursor:pointer;font-size:16px}
+  .preview-empty{color:var(--muted);font-style:italic;padding:8px}
+  .pay-row{display:flex;gap:8px;align-items:center}
+  .badge{background:#eef9f1;color:var(--green);padding:4px 8px;border-radius:999px;font-size:13px}
+  .btn-add{margin-top:6px}
+  .footer{font-size:13px;color:var(--muted);margin-top:12px}
+  @media (max-width:900px){.container{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+  <div class="container">
+    <!-- Left: Form -->
+    <div class="panel">
+      <h2>Registrar nueva atención</h2>
+
+      <!-- Patient lookup -->
+      <label for="ci">Carnet de identidad (CI)</label>
+      <div class="row">
+        <input id="ci" type="text" placeholder="Ej: 1234567" />
+        <button id="btn-lookup" class="ghost">Buscar</button>
+      </div>
+      <label>Paciente</label>
+      <input id="patient-name" type="text" placeholder="Nombre del paciente" />
+      <label>Celular</label>
+      <input id="patient-phone" type="tel" placeholder="telefono" />
+
+      <hr style="margin:12px 0;border:none;border-top:1px solid #eee" />
+
+      <!-- service selector -->
+      <label>Servicio</label>
+      <div class="row">
+        <select id="service-select"></select>
+        <input id="service-price" type="number" placeholder="Precio" min="0" />
+        <button id="btn-add-service" class="btn-add">+ Agregar</button>
+      </div>
+
+      <!-- product selector -->
+      <label>Producto</label>
+      <div class="row">
+        <select id="product-select"></select>
+        <input id="product-price" type="number" placeholder="Precio" min="0" />
+        <button id="btn-add-product" class="btn-add">+ Agregar</button>
+      </div>
+
+      <label>Tipo de pago</label>
+      <div class="pay-row">
+        <select id="payment-type">
+          <option value="efectivo">Efectivo</option>
+          <option value="qr">QR</option>
+          <option value="qr">Tarjeta</option>
+          
+        </select>
+        <input id="manual-total" type="number" placeholder="Ajuste total (opcional)" style="width:160px"/>
+      </div>
+
+      <div style="margin-top:12px">
+        <button id="btn-submit">Registrar atención</button>
+      </div>
+
+      <div class="footer">Simula buscar un paciente por CI (autocompleta nombre/celular si existe).</div>
+    </div>
+
+    <!-- Right: Preview / Dashboard pequeño -->
+    <div class="panel">
+      <h2>Preview de la atención</h2>
+      <div id="preview-list" class="list">
+        <div class="preview-empty">No hay servicios ni productos agregados.</div>
+      </div>
+
+      <div class="total">Total: <span id="total-amount">0.00</span> Bs.</div>
+
+      <hr style="margin:12px 0;border:none;border-top:1px solid #eee" />
+      <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+        <div><span class="small">Encargado:</span><br /><strong id="current-user">Alejandra Torres</strong></div>
+        <div><span class="small">Sucursal:</span><br /><span class="badge">Sucursal A</span></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/*
+  Ejemplo funcional:
+  - Agregar múltiples servicios y productos.
+  - Listar items agregados con subtotal y botón eliminar.
+  - Calcular total automáticamente.
+  - Simulación de búsqueda por CI (autocompleta paciente).
+  - En el submit, muestra por consola la estructura final.
+*/
+
+// Datos de ejemplo (en real, vienen desde backend)
+const services = [
+  { id: 's1', name: 'Limpieza facial', price: 80 },
+  { id: 's2', name: 'Radiofrecuencia', price: 120 },
+  { id: 's3', name: 'Peeling', price: 60 }
+];
+const products = [
+  { id: 'p1', name: 'Crema hidratante', price: 50 },
+  { id: 'p2', name: 'Protector solar', price: 70 },
+  { id: 'p3', name: 'Serum vitamínico', price: 120 }
+];
+
+// Simulación de pacientes por CI (normalmente backend)
+const pacientes = {
+  '1234567': { name: 'Ana María Castillo', phone: '68018322' },
+  '7654321': { name: 'Carlos Pérez', phone: '71234567' }
+};
+
+// Estado local (items agregados)
+let items = []; // cada item: {type:'serv'|'prod', id, name, price, qty}
+
+// referencias DOM
+const serviceSelect = document.getElementById('service-select');
+const productSelect = document.getElementById('product-select');
+const servicePrice = document.getElementById('service-price');
+const productPrice = document.getElementById('product-price');
+const btnAddService = document.getElementById('btn-add-service');
+const btnAddProduct = document.getElementById('btn-add-product');
+const previewList = document.getElementById('preview-list');
+const totalAmount = document.getElementById('total-amount');
+const btnLookup = document.getElementById('btn-lookup');
+const ciInput = document.getElementById('ci');
+const patientName = document.getElementById('patient-name');
+const patientPhone = document.getElementById('patient-phone');
+const btnSubmit = document.getElementById('btn-submit');
+const manualTotal = document.getElementById('manual-total');
+
+// llenar selects
+function fillSelects(){
+  services.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id; opt.textContent = `${s.name} — ${s.price} Bs.`;
+    serviceSelect.appendChild(opt);
+  });
+  products.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id; opt.textContent = `${p.name} — ${p.price} Bs.`;
+    productSelect.appendChild(opt);
+  });
+  // poner precios por defecto al seleccionar
+  serviceSelect.addEventListener('change', () => {
+    const s = services.find(x=>x.id===serviceSelect.value);
+    servicePrice.value = s ? s.price : '';
+  });
+  productSelect.addEventListener('change', () => {
+    const p = products.find(x=>x.id===productSelect.value);
+    productPrice.value = p ? p.price : '';
+  });
+}
+fillSelects();
+
+// agregar servicio
+btnAddService.addEventListener('click', () => {
+  const id = serviceSelect.value;
+  if(!id){ alert('Seleccione un servicio'); return;}
+  const s = services.find(x=>x.id===id);
+  const price = Number(servicePrice.value) || s.price;
+  addItem({type:'serv', id: s.id, name: s.name, price});
+});
+
+// agregar producto
+btnAddProduct.addEventListener('click', () => {
+  const id = productSelect.value;
+  if(!id){ alert('Seleccione un producto'); return;}
+  const p = products.find(x=>x.id===id);
+  const price = Number(productPrice.value) || p.price;
+  addItem({type:'prod', id: p.id, name: p.name, price});
+});
+
+function addItem(item){
+  // permitir múltiples iguales: guardamos como items independientes
+  items.push({...item, uid:Date.now()+Math.random()});
+  renderPreview();
+  updateTotal();
+}
+
+function renderPreview(){
+  previewList.innerHTML = '';
+  if(items.length===0){
+    previewList.innerHTML = '<div class="preview-empty">No hay servicios ni productos agregados.</div>';
+    return;
+  }
+  items.forEach((it, idx) => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    const t = document.createElement('div');
+    t.innerHTML = `<strong>${it.name}</strong> <div class="small">${it.type==='serv'?'Servicio':'Producto'}</div>`;
+    meta.appendChild(t);
+    const right = document.createElement('div');
+    right.style.display='flex'; right.style.alignItems='center'; right.style.gap='12px';
+    const p = document.createElement('div');
+    p.className='small'; p.textContent = `${it.price.toFixed(2)} Bs.`;
+    const btn = document.createElement('button');
+    btn.className = 'remove';
+    btn.textContent = 'Eliminar';
+    btn.title = 'Eliminar ítem';
+    btn.addEventListener('click', ()=> {
+      items = items.filter(x=>x.uid !== it.uid);
+      renderPreview();
+      updateTotal();
+    });
+    right.appendChild(p);
+    right.appendChild(btn);
+    div.appendChild(meta);
+    div.appendChild(right);
+    previewList.appendChild(div);
+  });
+}
+
+function updateTotal(){
+  const sum = items.reduce((acc,i)=>acc + Number(i.price || 0), 0);
+  // si hay ajuste manual en el input, usarlo como total final (opcional)
+  const manual = Number(manualTotal.value);
+  const final = (manual && manual > 0) ? manual : sum;
+  totalAmount.textContent = final.toFixed(2);
+}
+
+// lookup CI (simulado)
+btnLookup.addEventListener('click', (e)=> {
+  const ci = ciInput.value.trim();
+  if(!ci){ alert('Ingrese CI para buscar'); return; }
+  const p = pacientes[ci];
+  if(p){
+    patientName.value = p.name;
+    patientPhone.value = p.phone;
+    alert('Paciente encontrado y autocompletado.');
+  } else {
+    alert('No se encontró paciente. Complete los datos para registrar uno nuevo.');
+    patientName.focus();
+  }
+});
+
+// submit (simula envío)
+btnSubmit.addEventListener('click', () => {
+  if(items.length===0){ alert('Agregue al menos 1 servicio o producto antes de registrar.'); return; }
+  const payload = {
+    encargado: document.getElementById('current-user').textContent,
+    sucursal: document.querySelector('.badge').textContent,
+    patient: {
+      ci: ciInput.value.trim(),
+      name: patientName.value.trim(),
+      phone: patientPhone.value.trim()
+    },
+    items: items.map(i=>({type:i.type, id:i.id, name:i.name, price: Number(i.price)})),
+    payment: {
+      type: document.getElementById('payment-type').value,
+      total: Number(totalAmount.textContent)
+    },
+    createdAt: new Date().toISOString()
+  };
+  // en la práctica: enviar payload via fetch() al backend
+  console.log('Payload a enviar al servidor:', payload);
+  alert('Atención registrada (simulación). Revisa la consola para ver el payload.');
+  // limpiar formulario (opcional)
+  items = []; renderPreview(); updateTotal();
+});
+
+manualTotal.addEventListener('input', updateTotal);
+</script>
+</body>
+</html>

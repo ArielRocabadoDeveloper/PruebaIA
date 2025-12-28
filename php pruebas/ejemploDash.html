@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dashboard - Dueña</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  :root{
+    --bg: #f6f8fa;
+    --card: #ffffff;
+    --accent: #31b237;
+    --muted: #7a7f86;
+    --glass: rgba(49,178,55,0.08);
+  }
+  *{box-sizing:border-box}
+  body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:var(--bg); color:#222}
+  .wrap{max-width:1200px;margin:22px auto;padding:16px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),#24a62a);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
+  h1{margin:0;font-size:18px}
+  .sub{color:var(--muted);font-size:13px}
+
+  /* grid layout */
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(12,1fr);
+    gap:14px;
+  }
+
+  /* cards */
+  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(18,24,34,0.06);min-height:100px}
+  .kpi{grid-column: span 3}
+  .kpi .label{font-size:13px;color:var(--muted);}
+  .kpi .value{font-size:22px;font-weight:700;margin-top:6px}
+  .kpi .small{font-size:12px;color:#4d9e4c;margin-top:6px}
+
+  .bigcard{grid-column: span 6; display:flex; flex-direction:column; gap:8px;}
+  .midcard{grid-column: span 4;}
+  .full{grid-column: 1 / -1;}
+
+  /* responsive behavior */
+  @media (max-width:1000px){
+    .kpi{grid-column: span 6}
+    .bigcard{grid-column: span 12}
+    .midcard{grid-column: span 12}
+  }
+
+  /* chart containers */
+  .chart-wrap{height:220px}
+  .mini-list{display:flex;flex-direction:column;gap:8px}
+  .mini-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:var(--glass);font-size:14px}
+  .mini-item .left{display:flex;gap:10px;align-items:center}
+  .dot{width:12px;height:12px;border-radius:50%}
+  .dot.green{background:#31b237}
+  .dot.blue{background:#2b8cff}
+  .dot.orange{background:#ff9f1c}
+  .table{width:100%;border-collapse:collapse;margin-top:8px}
+  .table th, .table td{padding:8px;text-align:left;border-bottom:1px solid #f0f0f0;font-size:14px}
+  .table th{color:var(--muted);font-weight:600}
+  .total-big{font-size:32px;font-weight:800;color:#0f5132}
+
+  /* footer small */
+  .footer{margin-top:14px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">VEX</div>
+        <div>
+          <h1>Panel de control — Administradora</h1>
+          <div class="sub">Resumen mensual y métricas clave</div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:600">Dueña Admin</div>
+        <div class="sub">Última actualización: <span id="updatedAt">—</span></div>
+      </div>
+    </header>
+
+    <section class="grid">
+      <!-- KPIs -->
+      <div class="card kpi">
+        <div class="label">Total generado (mes)</div>
+        <div class="value total-big" id="kpi-total">0 Bs.</div>
+        <div class="small" id="kpi-trend">Comparado al mes pasado: +0%</div>
+      </div>
+
+      <div class="card kpi">
+        <div class="label">Servicio más requerido</div>
+        <div class="value" id="kpi-service">—</div>
+        <div class="small" id="kpi-service-count">— veces</div>
+      </div>
+
+      <div class="card kpi">
+        <div class="label">Producto más vendido</div>
+        <div class="value" id="kpi-product">—</div>
+        <div class="small" id="kpi-product-count">— unidades</div>
+      </div>
+
+      <!-- big charts -->
+      <div class="card bigcard">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Productos más vendidos (top 6)</strong>
+          <small class="sub">por cantidad</small>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartProducts"></canvas>
+        </div>
+      </div>
+
+      <div class="card midcard">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Servicios más requeridos</strong>
+          <small class="sub">por cantidad</small>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartServices"></canvas>
+        </div>
+      </div>
+
+      <div class="card midcard">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Médicos (atenciones este mes)</strong>
+          <small class="sub">ranking</small>
+        </div>
+        <div class="mini-list" id="doctors-list"></div>
+      </div>
+
+      <div class="card midcard">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Cliente con más frecuencias</strong>
+          <small class="sub">visitas este mes</small>
+        </div>
+        <div style="margin-top:10px">
+          <table class="table">
+            <thead><tr><th>Cliente</th><th>Visitas</th><th>Total gastado</th></tr></thead>
+            <tbody id="top-client-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- full width recent / insights -->
+      <div class="card full">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Datos rápidos</strong>
+          <div>
+            <button id="btn-refresh" class="btn" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Refrescar</button>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:240px">
+            <div class="label">Promedio por atención</div>
+            <div style="font-size:20px;font-weight:700" id="avg-per-visit">0 Bs.</div>
+          </div>
+          <div style="flex:1;min-width:240px">
+            <div class="label">Clientes nuevos (mes)</div>
+            <div style="font-size:20px;font-weight:700" id="new-clients">0</div>
+          </div>
+          <div style="flex:1;min-width:240px">
+            <div class="label">Atenciones totales (mes)</div>
+            <div style="font-size:20px;font-weight:700" id="total-visits">0</div>
+          </div>
+        </div>
+
+        <div class="footer">Estos datos son ejemplo. Reemplaza con la respuesta del backend (API) para datos reales.</div>
+      </div>
+    </section>
+  </div>
+
+<script>
+/*
+  Mock data (ejemplo). Reemplaza esta parte por llamada a tu backend (fetch('/api/dashboard')...).
+  El objeto `data` debe venir del servidor con las métricas reales.
+*/
+const data = {
+  updatedAt: new Date().toLocaleString(),
+  totalGenerated: 12540.50,
+  prevMonthTotal: 9800.00,
+  topProduct: { name: "Protector solar", qty: 134 },
+  topService: { name: "Limpieza facial", qty: 210 },
+  productsTop: [
+    { name: "Protector solar", qty: 134 },
+    { name: "Crema hidratante", qty: 98 },
+    { name: "Serum vitamínico", qty: 87 },
+    { name: "Tónico", qty: 60 },
+    { name: "Mascarilla", qty: 34 },
+    { name: "Exfoliante", qty: 22 }
+  ],
+  servicesTop: [
+    { name: "Limpieza facial", qty: 210 },
+    { name: "Radiofrecuencia", qty: 140 },
+    { name: "Peeling", qty: 90 },
+    { name: "Consulta general", qty: 60 }
+  ],
+  doctors: [
+    { name: "Alejandra Torres", visits: 86 },
+    { name: "Dr. Juan Pérez", visits: 67 },
+    { name: "Dra. Marta", visits: 52 },
+    { name: "Dr. Luis", visits: 18 }
+  ],
+  topClient: { name: "Ana María Castillo", visits: 9, spent: 840.00 },
+  avgPerVisit: 98.3,
+  newClients: 12,
+  totalVisits: 223
+};
+
+function renderDashboard(d){
+  document.getElementById('updatedAt').textContent = d.updatedAt;
+  document.getElementById('kpi-total').textContent = d.totalGenerated.toLocaleString('es-BO',{style:'currency',currency:'BOB',maximumFractionDigits:2});
+  const trend = Math.round(((d.totalGenerated - d.prevMonthTotal)/ (d.prevMonthTotal || 1)) * 100);
+  document.getElementById('kpi-trend').textContent = `Comparado al mes pasado: ${trend >= 0 ? '+'+trend : trend}%`;
+
+  document.getElementById('kpi-product').textContent = d.topProduct.name;
+  document.getElementById('kpi-product-count').textContent = `${d.topProduct.qty} unidades`;
+  document.getElementById('kpi-service').textContent = d.topService.name;
+  document.getElementById('kpi-service-count').textContent = `${d.topService.qty} veces`;
+
+  document.getElementById('avg-per-visit').textContent = d.avgPerVisit.toLocaleString('es-BO',{style:'currency',currency:'BOB',maximumFractionDigits:2});
+  document.getElementById('new-clients').textContent = d.newClients;
+  document.getElementById('total-visits').textContent = d.totalVisits;
+
+  // top client table
+  const tbody = document.getElementById('top-client-body');
+  tbody.innerHTML = `<tr><td>${d.topClient.name}</td><td>${d.topClient.visits}</td><td>${d.topClient.spent.toLocaleString('es-BO',{style:'currency',currency:'BOB'})}</td></tr>`;
+
+  // doctors list
+  const dl = document.getElementById('doctors-list');
+  dl.innerHTML = '';
+  d.doctors.forEach((doc, idx)=>{
+    const div = document.createElement('div');
+    div.className = 'mini-item';
+    div.innerHTML = `<div class="left"><div class="dot ${idx===0?'green': idx===1?'blue':'orange'}"></div><div style="margin-left:8px"><strong>${doc.name}</strong><div class="small">${doc.visits} atenciones</div></div></div><div style="font-weight:700">${doc.visits}</div>`;
+    dl.appendChild(div);
+  });
+
+  // charts
+  const prodLabels = d.productsTop.map(p => p.name);
+  const prodData = d.productsTop.map(p => p.qty);
+  const servLabels = d.servicesTop.map(s => s.name);
+  const servData = d.servicesTop.map(s => s.qty);
+
+  // Products bar
+  new Chart(document.getElementById('chartProducts'), {
+    type: 'bar',
+    data: {
+      labels: prodLabels,
+      datasets: [{
+        label: 'Unidades',
+        data: prodData,
+        backgroundColor: ['#31b237','#2b8cff','#ff9f1c','#8e44ad','#e67e22','#16a085'],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true, ticks:{precision:0}}
+      }
+    }
+  });
+
+  // Services pie
+  new Chart(document.getElementById('chartServices'), {
+    type: 'doughnut',
+    data: {
+      labels: servLabels,
+      datasets: [{
+        label: 'Servicios',
+        data: servData,
+        backgroundColor: ['#31b237','#2b8cff','#ff9f1c','#9b59b6']
+      }]
+    },
+    options:{responsive:true, plugins:{legend:{position:'bottom'}}}
+  });
+}
+
+renderDashboard(data);
+
+// refresh button (simula recarga)
+document.getElementById('btn-refresh').addEventListener('click', ()=>{
+  // aquí pondrías un fetch('/api/dashboard.php') para obtener datos reales del servidor
+  // fetch('/api/dashboard.php').then(r=>r.json()).then(json=>renderDashboard(json));
+  alert('Simulación: aquí se actualizarían los datos desde el servidor.');
+});
+</script>
+</body>
+</html>
